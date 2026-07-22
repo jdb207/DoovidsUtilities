@@ -1,13 +1,18 @@
 package net.james.gui;
 
-import net.james.hud.HudManager;
-import net.james.module.ModuleManager;
-import net.james.module.modules.hud.FpsModule;
-import net.minecraft.client.gui.components.Button;
+import net.james.gui.components.Panel;
+import net.james.module.Category;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.animal.feline.Cat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClickGuiScreen extends Screen {
+
+    private final List<Panel> panels = new ArrayList<>();
 
 
     public ClickGuiScreen(Component title) {
@@ -16,10 +21,20 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     protected void init() {
-        Button fpsToggle = Button.builder(Component.literal("FPS Toggle"), button -> {
-            ModuleManager.getInstance().getModule(FpsModule.class).toggle();
-                }
-        ).bounds(5,5,120,20).build();
-        this.addRenderableWidget(fpsToggle);
+        int currentX = 5;
+        int currentY = 5;
+        for(Category category : Category.values()) {
+            panels.add(new Panel(category,currentX, currentY));
+            currentX += Panel.PANEL_WIDTH + Panel.PANEL_SPACING;
+        }
+    }
+
+    @Override
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(graphics,mouseX,mouseY,delta);
+        for(Panel panel : panels) {
+            panel.render(graphics);
+        }
+
     }
 }
