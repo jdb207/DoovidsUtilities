@@ -3,6 +3,7 @@ package net.james.module;
 import net.james.hud.OrdinatesHud;
 import net.james.module.modules.hud.CoordinateModule;
 import net.james.module.modules.hud.FpsModule;
+import net.james.module.modules.movement.SprintModule;
 import net.minecraft.world.entity.animal.feline.Cat;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class ModuleManager {
     private final List<Module> modules = new ArrayList<>();
     private final FpsModule fpsModule = new FpsModule();
     private final CoordinateModule coordinateModule = new CoordinateModule();
+    private final SprintModule sprintModule = new SprintModule();
 
     public ModuleManager() {
 
@@ -30,6 +32,7 @@ public class ModuleManager {
     public void init() {
         register(fpsModule);
         register(coordinateModule);
+        register(sprintModule);
 
         fpsModule.toggle();
         coordinateModule.toggle();

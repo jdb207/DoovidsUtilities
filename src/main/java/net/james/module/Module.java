@@ -44,4 +44,5 @@ public abstract class Module {
     public void toggle() {
         setEnabled(!enabled);
     }
+
 }
