@@ -24,7 +24,7 @@ public class Header implements IGuiComponent{
     }
 
 
-    public void render(GuiGraphicsExtractor graphics) {
+    public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getInstance();
         graphics.fill(panel.getX(), panel.getY(),panel.getX()+Header.WIDTH ,panel.getY() + Header.HEIGHT, Header.COLOR);
         graphics.text(mc.font, getCategoryName(), panel.getX()+2, panel.getY() + HEIGHT/3, 0xFFFFFFFF);

@@ -3,6 +3,8 @@ package net.james.module.modules.movement;
 import net.james.hud.HudManager;
 import net.james.module.Category;
 import net.james.module.Module;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 
 public class SprintModule extends Module {
 
@@ -13,6 +15,7 @@ public class SprintModule extends Module {
 
     @Override
     protected void onEnable() {
+        Minecraft mc = Minecraft.getInstance();
 
     }
 

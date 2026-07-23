@@ -6,35 +6,31 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.animal.feline.Cat;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClickGuiScreen extends Screen {
 
-    private final List<Panel> panels = new ArrayList<>();
+    private List<Panel> panels;
 
 
     public ClickGuiScreen(Component title) {
-        super(title);
+        super(title);;
     }
 
     @Override
     protected void init() {
         int currentX = 5;
         int currentY = 5;
-        for(Category category : Category.values()) {
-            panels.add(new Panel(category,currentX, currentY));
-            currentX += Panel.PANEL_WIDTH + Panel.PANEL_SPACING;
-        }
+        this.panels = ClickGuiManager.getInstance().getPanels();
     }
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         super.extractRenderState(graphics,mouseX,mouseY,delta);
         for(Panel panel : panels) {
-            panel.render(graphics);
+            panel.render(graphics, mouseX, mouseY);
         }
     }
 

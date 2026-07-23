@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 public interface IGuiComponent {
 
 
-    void render(GuiGraphicsExtractor graphics);
+    void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY);
 
 
     boolean mouseClicked(double mouseX, double mouseY, int buttonPressed);
