@@ -24,7 +24,7 @@ public class KeybindManager {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while(clickGUIKey.consumeClick()) {
                 if(client.player != null) {
-                    Minecraft.getInstance().setScreenAndShow(new ClickGuiScreen(Component.empty()));
+                    Minecraft.getInstance().gui.setScreen(new ClickGuiScreen(Component.empty()));
                 }
             }
         });

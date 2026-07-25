@@ -3,6 +3,8 @@ package net.james;
 import net.fabricmc.api.ClientModInitializer;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.james.gui.ClickGuiManager;
+import net.james.gui.screens.ClickGuiScreen;
 import net.james.hud.HudManager;
 import net.james.keybind.KeybindManager;
 import net.james.module.ModuleManager;
@@ -16,14 +18,18 @@ public class UtilityMod implements ClientModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	private HudManager hudManager;
 	private ModuleManager moduleManager;
+	private ClickGuiManager clickGuiManager;
 
 	@Override
 	public void onInitializeClient() {
 		hudManager = HudManager.getInstance();
 		moduleManager = ModuleManager.getInstance();
+		clickGuiManager = ClickGuiManager.getInstance();
 		moduleManager.init();
+
 		KeybindManager.init();
 		registerRenderer();
+		clickGuiManager.init();
 	}
 
 	public static Identifier id(String path) {
@@ -34,7 +40,7 @@ public class UtilityMod implements ClientModInitializer {
 		HudElementRegistry.addLast(
 				UtilityMod.id("hud"),
 				((graphics, deltaTracker) ->
-						HudManager.getInstance().render(graphics, deltaTracker))
+						HudManager.getInstance().render(graphics))
 		);
 	}
 

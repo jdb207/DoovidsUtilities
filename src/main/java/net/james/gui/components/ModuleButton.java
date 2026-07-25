@@ -5,16 +5,21 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.ARGB;
 
-public class ModuleButton implements IGuiComponent{
+public class ModuleButton extends AbstractGuiComponent {
     private final Module module;
-    public static int BUTTON_HEIGHT = 20;
+
+
+    private static final int BUTTON_HEIGHT = 20;
     public static int MODULE_NAME_COLOR = 0xFFFFFFFF;
     public static int MODULE_BUTTON_COLOR = 0xff646464;
     public static int ENABLED_COLOR = 0xff434343;
-    private int x;
-    private int y;
+
+
+    private int offsetX;
+    private int offsetY;
 
     public ModuleButton(Module module) {
+        super(0,0, 100);
         this.module = module;
     }
 
@@ -33,8 +38,8 @@ public class ModuleButton implements IGuiComponent{
         else {
              color = isMouseOver(mouseX, mouseY) ? ENABLED_COLOR : MODULE_BUTTON_COLOR;
         }
-        graphics.fill(getX()+1, y, getX() + Panel.PANEL_WIDTH - 1, getY() + BUTTON_HEIGHT - 1, color);
-        graphics.text(mc.font, module.getName(), getX() + 2, y + BUTTON_HEIGHT/3, MODULE_NAME_COLOR);
+        graphics.fill(getX()+1, getY(), getX() + Panel.PANEL_WIDTH - 1, getY() + BUTTON_HEIGHT - 1, color);
+        graphics.text(mc.font, module.getName(), getX() + 2, getY() + BUTTON_HEIGHT/3, MODULE_NAME_COLOR);
     }
 
 
@@ -58,27 +63,12 @@ public class ModuleButton implements IGuiComponent{
         return false;
     }
 
-    @Override
-    public boolean isMouseOver(double mouseX, double mouseY) {
-        return mouseX >= getX()+1 &&
-                mouseX <= getX() + Panel.PANEL_WIDTH -1 &&
-                mouseY >= getY() &&
-                mouseY <= getY() + BUTTON_HEIGHT-1;
-    }
-
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
+    @Override
+    public int getHeight() {
+        return BUTTON_HEIGHT;
     }
 }

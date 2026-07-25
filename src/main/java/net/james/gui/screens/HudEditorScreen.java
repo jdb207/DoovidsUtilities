@@ -11,10 +11,17 @@ import java.util.List;
 
 public class HudEditorScreen extends Screen {
     private List<AbstractHudElement> elementList;
+    private Screen parent;
+
 
     @Override
     protected void init() {
         this.elementList = HudManager.getInstance().getElements();
+    }
+
+    @Override
+    public void onClose() {
+        this.minecraft.setScreenAndShow(this.parent);
     }
 
 
@@ -27,8 +34,9 @@ public class HudEditorScreen extends Screen {
     }
 
 
-    public HudEditorScreen(Component title) {
+    public HudEditorScreen(Component title, Screen parent) {
         super(title);
+        this.parent = parent;
     }
 
     @Override
@@ -70,4 +78,5 @@ public class HudEditorScreen extends Screen {
         }
         return super.isMouseOver(mouseX, mouseY);
     }
+
 }

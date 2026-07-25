@@ -12,9 +12,12 @@ public class ClickGuiManager {
 
 
     private ClickGuiManager() {
+    }
+
+    public void init() {
         int runningX = 10;
         for(Category category : Category.values()) {
-            panels.add(new Panel(category, runningX, 10));
+            panels.add(new Panel(runningX, 10, category));
             runningX += Panel.PANEL_WIDTH + 1;
         }
     }
@@ -25,5 +28,14 @@ public class ClickGuiManager {
 
     public List<Panel> getPanels() {
         return this.panels;
+    }
+
+    public Panel getPanel(Category category) {
+        for(Panel panel : panels) {
+            if(panel.getCategory() == Category.HUD) {
+                return panel;
+            }
+        }
+        return null;
     }
 }

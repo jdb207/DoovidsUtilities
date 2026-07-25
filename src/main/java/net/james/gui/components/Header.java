@@ -5,12 +5,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 
-public class Header implements IGuiComponent{
-    //TODO fix magic numbers here
-    public static int WIDTH = 100;
-    public static int HEIGHT = Minecraft.getInstance().font.lineHeight+5;
+public class Header extends AbstractGuiComponent {
     public static int SPACING = 1;
     public static int COLOR = 0xff262221;
+    private static int HEADER_HEIGHT = 20;
     private final Panel panel;
     private final String categoryName;
     private boolean dragging = false;
@@ -19,6 +17,7 @@ public class Header implements IGuiComponent{
 
 
     public Header(Panel panel, String categoryName) {
+        super(panel.getX(),panel.getY(),100);
         this.panel = panel;
         this.categoryName = categoryName;
     }
@@ -26,8 +25,8 @@ public class Header implements IGuiComponent{
 
     public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getInstance();
-        graphics.fill(panel.getX(), panel.getY(),panel.getX()+Header.WIDTH ,panel.getY() + Header.HEIGHT, Header.COLOR);
-        graphics.text(mc.font, getCategoryName(), panel.getX()+2, panel.getY() + HEIGHT/3, 0xFFFFFFFF);
+        graphics.fill(getX(), getY(),getX()+getWidth() ,getY() + getHeight(), Header.COLOR);
+        graphics.text(mc.font, getCategoryName(), getX()+2, getY() + HEADER_HEIGHT/3 - 1, 0xFFFFFFFF);
     }
 
     public Panel getPanel() {
@@ -38,6 +37,11 @@ public class Header implements IGuiComponent{
         return categoryName;
     }
 
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed) {
@@ -45,8 +49,8 @@ public class Header implements IGuiComponent{
             return false;
         }
         dragging = true;
-        dragOffsetX = (int) mouseX - panel.getX();
-        dragOffsetY = (int) mouseY - panel.getY();
+        dragOffsetX = (int) mouseX - getX();
+        dragOffsetY = (int) mouseY - getY();
         return true;
     }
 
@@ -65,10 +69,7 @@ public class Header implements IGuiComponent{
     }
 
     @Override
-    public boolean isMouseOver(double mouseX, double mouseY) {
-        return mouseX >= panel.getX()
-                && mouseX <= panel.getX() + Header.WIDTH
-                && mouseY >= panel.getY()
-                && mouseY <= panel.getY() + Header.HEIGHT;
+    public int getHeight() {
+        return HEADER_HEIGHT;
     }
 }

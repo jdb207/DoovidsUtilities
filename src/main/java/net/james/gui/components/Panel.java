@@ -4,42 +4,40 @@ import net.james.module.Category;
 import net.james.module.Module;
 import net.james.module.ModuleManager;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.entity.animal.feline.Cat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Panel implements IGuiComponent {
+public class Panel extends AbstractGuiComponent {
 
-    private final List<ModuleButton> buttons = new ArrayList<>();
+    private final List<AbstractGuiComponent> children = new ArrayList<>();
     private final Category category;
     private final Header header;
 
-
-    private int x;
-    private int y;
-
-    private int mouseX;
-    private int mouseY;
 
     public static final int PANEL_WIDTH = 100;
     public static int PANEL_BACK_COLOR = 0xff585858;
     public static int PANEL_BORDER_COLOR = 0xFF0000FF;
     public static int PANEL_SPACING = 5;
 
-    public Panel(Category category, int x, int y) {
+    public Panel(int x, int y, Category category) {
+        super(x, y, 100);
         this.category = category;
-        this.x = x;
-        this.y = y;
         this.header = new Header(this, getCategoryName());
+
         for(Module module : ModuleManager.getInstance().getModules(category)) {
-            buttons.add(new ModuleButton(module));
+            children.add(new ModuleButton(module));
         }
+        if(this.getCategory() == Category.HUD) {
+            children.add(new HudEditorButton(this));
+        }
+        layout();
     }
 
     @Override
     public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
         //TODO make height/width based on module names / number of modules
         //Draw panel background
         drawBackground(graphics);
@@ -50,7 +48,7 @@ public class Panel implements IGuiComponent {
         //Draw panel header
         header.render(graphics, mouseX, mouseY);
         //Draw Module Buttons
-        drawButtons(graphics);
+        renderChildren(graphics, mouseX, mouseY);
     }
 
     public void drawBackground(GuiGraphicsExtractor graphics) {
@@ -61,20 +59,23 @@ public class Panel implements IGuiComponent {
         graphics.outline(getX(), getY(), PANEL_WIDTH, getHeight(),PANEL_BORDER_COLOR );
     }
 
-    public void drawButtons(GuiGraphicsExtractor graphics) {
-        int buttonY = this.getY() + Header.HEIGHT;
-        for(ModuleButton button : buttons) {
-            button.setX(getX());
-            button.setY(buttonY);
-            button.render(graphics, mouseX, mouseY);
-            buttonY += ModuleButton.BUTTON_HEIGHT;
+    public void renderChildren(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        for(AbstractGuiComponent child : children) {
+            child.render(graphics, mouseX, mouseY);
         }
     }
 
     public void layout() {
+        header.setPosition(x, y);
+        int currentY = y + header.getHeight();
+        for(AbstractGuiComponent child : children) {
+            child.setPosition(x, currentY);
+            currentY += child.getHeight();
+        }
 
     }
 
+    @Override
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
@@ -96,8 +97,12 @@ public class Panel implements IGuiComponent {
         return category.toString();
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
     public int getHeight(){
-        return Header.HEIGHT + buttons.size() * ModuleButton.BUTTON_HEIGHT;
+        return header.getHeight() + children.stream().mapToInt(AbstractGuiComponent::getHeight).sum();
     }
 
     @Override
@@ -105,8 +110,8 @@ public class Panel implements IGuiComponent {
         if(header.mouseClicked(mouseX, mouseY,buttonPressed)) {
             return true;
         }
-        for(ModuleButton button : buttons) {
-            if(button.mouseClicked(mouseX, mouseY, buttonPressed)){
+        for(AbstractGuiComponent child : children) {
+            if(child.mouseClicked(mouseX, mouseY, buttonPressed)){
                 return true;
             }
         }
@@ -118,8 +123,8 @@ public class Panel implements IGuiComponent {
         if(header.mouseReleased(mouseX, mouseY,buttonPressed)) {
             return true;
         }
-        for(ModuleButton button : buttons) {
-            if(button.mouseReleased(mouseX, mouseY, buttonPressed)) {
+        for(AbstractGuiComponent child : children) {
+            if(child.mouseReleased(mouseX, mouseY, buttonPressed)) {
                 return true;
             }
         }
@@ -131,8 +136,8 @@ public class Panel implements IGuiComponent {
         if(header.mouseDragged(mouseX, mouseY, buttonPressed, dragX, dragY)) {
             return true;
         }
-        for(ModuleButton button : buttons) {
-            if(button.mouseDragged(mouseX, mouseY, buttonPressed, dragX, dragY)) {
+        for(AbstractGuiComponent child : children) {
+            if(child.mouseDragged(mouseX, mouseY, buttonPressed, dragX, dragY)) {
                 return true;
             }
         }
@@ -144,8 +149,8 @@ public class Panel implements IGuiComponent {
         if(header.isMouseOver(mouseX, mouseY)) {
             return true;
         }
-        for(ModuleButton button : buttons) {
-            if(button.isMouseOver(mouseX, mouseY)) {
+        for(AbstractGuiComponent child : children) {
+            if(child.isMouseOver(mouseX, mouseY)) {
                 return true;
             }
         }
