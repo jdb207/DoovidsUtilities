@@ -10,7 +10,7 @@ public class Header implements IGuiComponent{
     public static int WIDTH = 100;
     public static int HEIGHT = Minecraft.getInstance().font.lineHeight+5;
     public static int SPACING = 1;
-    public static int COLOR = 0xF2423B3F;
+    public static int COLOR = 0xff262221;
     private final Panel panel;
     private final String categoryName;
     private boolean dragging = false;

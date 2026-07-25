@@ -3,13 +3,14 @@ package net.james.gui.components;
 import net.james.module.Module;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.util.ARGB;
 
 public class ModuleButton implements IGuiComponent{
     private final Module module;
     public static int BUTTON_HEIGHT = 20;
     public static int MODULE_NAME_COLOR = 0xFFFFFFFF;
-    public static int MODULE_BUTTON_COLOR = 0xFFCCFFFF;
-    public static int HOVER_COLOR = 0xffffcc00;
+    public static int MODULE_BUTTON_COLOR = 0xff646464;
+    public static int ENABLED_COLOR = 0xff434343;
     private int x;
     private int y;
 
@@ -22,10 +23,15 @@ public class ModuleButton implements IGuiComponent{
         Minecraft mc = Minecraft.getInstance();
         int color;
         if(module.isEnabled()) {
-             color = HOVER_COLOR;
+            if(isMouseOver(mouseX, mouseY)) {
+                color = ARGB.multiplyAlpha(ENABLED_COLOR, 0.5f);
+            }
+            else {
+                color = ENABLED_COLOR;
+            }
         }
         else {
-             color = isMouseOver(mouseX, mouseY) ? HOVER_COLOR : MODULE_BUTTON_COLOR;
+             color = isMouseOver(mouseX, mouseY) ? ENABLED_COLOR : MODULE_BUTTON_COLOR;
         }
         graphics.fill(getX()+1, y, getX() + Panel.PANEL_WIDTH - 1, getY() + BUTTON_HEIGHT - 1, color);
         graphics.text(mc.font, module.getName(), getX() + 2, y + BUTTON_HEIGHT/3, MODULE_NAME_COLOR);

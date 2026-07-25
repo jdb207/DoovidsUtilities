@@ -22,7 +22,7 @@ public class Panel implements IGuiComponent {
     private int mouseY;
 
     public static final int PANEL_WIDTH = 100;
-    public static int PANEL_BACK_COLOR = 0xFFDBC0F7;
+    public static int PANEL_BACK_COLOR = 0xff585858;
     public static int PANEL_BORDER_COLOR = 0xFF0000FF;
     public static int PANEL_SPACING = 5;
 
@@ -38,15 +38,17 @@ public class Panel implements IGuiComponent {
 
     @Override
     public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
         //TODO make height/width based on module names / number of modules
         //Draw panel background
         drawBackground(graphics);
         //Draw panel border
-        drawBorder(graphics);
+
+        //drawBorder(graphics);
+
         //Draw panel header
         header.render(graphics, mouseX, mouseY);
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
         //Draw Module Buttons
         drawButtons(graphics);
     }

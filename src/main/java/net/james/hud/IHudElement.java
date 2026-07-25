@@ -5,5 +5,5 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public interface IHudElement {
 
-     void render(GuiGraphicsExtractor guiGraphicsExtractor, DeltaTracker deltaTracker);
+     void render(GuiGraphicsExtractor guiGraphicsExtractor);
 }

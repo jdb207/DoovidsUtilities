@@ -1,13 +1,12 @@
-package net.james.gui;
+package net.james.gui.screens;
 
+import net.james.gui.ClickGuiManager;
 import net.james.gui.components.Panel;
-import net.james.module.Category;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClickGuiScreen extends Screen {
@@ -27,10 +26,10 @@ public class ClickGuiScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
-        super.extractRenderState(graphics,mouseX,mouseY,delta);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(guiGraphicsExtractor,mouseX,mouseY,delta);
         for(Panel panel : panels) {
-            panel.render(graphics, mouseX, mouseY);
+            panel.render(guiGraphicsExtractor, mouseX, mouseY);
         }
     }
 

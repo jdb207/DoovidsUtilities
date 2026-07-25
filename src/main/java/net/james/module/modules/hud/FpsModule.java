@@ -1,6 +1,6 @@
 package net.james.module.modules.hud;
 
-import net.james.hud.FPSHud;
+import net.james.hud.elements.FPSHud;
 import net.james.hud.HudManager;
 import net.james.module.Category;
 import net.james.module.Module;

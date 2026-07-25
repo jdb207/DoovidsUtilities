@@ -1,10 +1,9 @@
 package net.james.module.modules.hud;
 
 import net.james.hud.HudManager;
-import net.james.hud.OrdinatesHud;
+import net.james.hud.elements.OrdinatesHud;
 import net.james.module.Category;
 import net.james.module.Module;
-import net.james.module.ModuleManager;
 
 public class CoordinateModule extends Module {
 

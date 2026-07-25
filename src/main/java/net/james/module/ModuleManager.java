@@ -1,12 +1,12 @@
 package net.james.module;
 
-import net.james.hud.OrdinatesHud;
+import net.james.module.modules.hud.ArrayListModule;
 import net.james.module.modules.hud.CoordinateModule;
 import net.james.module.modules.hud.FpsModule;
 import net.james.module.modules.movement.SprintModule;
-import net.minecraft.world.entity.animal.feline.Cat;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ModuleManager {
@@ -15,6 +15,7 @@ public class ModuleManager {
     private final FpsModule fpsModule = new FpsModule();
     private final CoordinateModule coordinateModule = new CoordinateModule();
     private final SprintModule sprintModule = new SprintModule();
+    private final ArrayListModule arrayListModule = new ArrayListModule();
 
     public ModuleManager() {
 
@@ -32,10 +33,8 @@ public class ModuleManager {
     public void init() {
         register(fpsModule);
         register(coordinateModule);
+        register(arrayListModule);
         register(sprintModule);
-
-        fpsModule.toggle();
-        coordinateModule.toggle();
     }
 
     public List<Module> getModules() {
@@ -46,6 +45,16 @@ public class ModuleManager {
         return modules.stream().filter(
                 module -> module.getCategory() == category
         ).toList();
+    }
+
+    public List<Module> getEnabledModules() {
+        return modules.stream().filter(
+                Module::isEnabled
+        ).toList();
+    }
+
+    public List<Module> getSortedEnabledModules() {
+        return modules.stream().filter(Module::isEnabled).sorted(Comparator.comparing(Module::getName)).toList();
     }
 
     public <T extends Module> T getModule(Class<T> clazz) {
