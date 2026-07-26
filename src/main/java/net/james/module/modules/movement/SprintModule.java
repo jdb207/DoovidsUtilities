@@ -15,7 +15,6 @@ public class SprintModule extends Module {
 
     @Override
     protected void onEnable() {
-        Minecraft mc = Minecraft.getInstance();
 
     }
 

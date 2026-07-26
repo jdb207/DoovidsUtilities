@@ -1,8 +1,5 @@
 package net.james.module;
 
-import net.james.module.modules.hud.ArrayListModule;
-import net.james.module.modules.hud.CoordinateModule;
-import net.james.module.modules.hud.FpsModule;
 import net.james.module.modules.movement.SprintModule;
 
 import java.util.ArrayList;
@@ -12,10 +9,7 @@ import java.util.List;
 public class ModuleManager {
     private static final ModuleManager INSTANCE = new ModuleManager();
     private final List<Module> modules = new ArrayList<>();
-    private final FpsModule fpsModule = new FpsModule();
-    private final CoordinateModule coordinateModule = new CoordinateModule();
     private final SprintModule sprintModule = new SprintModule();
-    private final ArrayListModule arrayListModule = new ArrayListModule();
 
     public ModuleManager() {
 
@@ -31,9 +25,7 @@ public class ModuleManager {
     }
 
     public void init() {
-        register(fpsModule);
-        register(coordinateModule);
-        register(arrayListModule);
+
         register(sprintModule);
     }
 

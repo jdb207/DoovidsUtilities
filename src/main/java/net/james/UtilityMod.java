@@ -26,7 +26,7 @@ public class UtilityMod implements ClientModInitializer {
 		moduleManager = ModuleManager.getInstance();
 		clickGuiManager = ClickGuiManager.getInstance();
 		moduleManager.init();
-
+		hudManager.init();
 		KeybindManager.init();
 		registerRenderer();
 		clickGuiManager.init();

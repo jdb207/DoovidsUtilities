@@ -62,7 +62,7 @@ public class HudEditorScreen extends Screen {
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
         for(AbstractHudElement element : elementList) {
-            if(element.mouseClicked(event.x(), event.y(), event.button())) {
+            if(element.mouseDragged(event.x(), event.y(), event.button(), dx, dy)) {
                 return true;
             }
         }
