@@ -1,7 +1,7 @@
 package net.james.gui.screens;
 
 import net.james.gui.ClickGuiManager;
-import net.james.gui.components.Panel;
+import net.james.gui.components.clickgui.PanelComponent;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ClickGuiScreen extends Screen {
 
-    private List<Panel> panels;
+    private List<PanelComponent> panelComponents;
 
 
     public ClickGuiScreen(Component title) {
@@ -22,21 +22,21 @@ public class ClickGuiScreen extends Screen {
     protected void init() {
         int currentX = 5;
         int currentY = 5;
-        this.panels = ClickGuiManager.getInstance().getPanels();
+        this.panelComponents = ClickGuiManager.getInstance().getPanels();
     }
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY, float delta) {
         super.extractRenderState(guiGraphicsExtractor,mouseX,mouseY,delta);
-        for(Panel panel : panels) {
-            panel.render(guiGraphicsExtractor, mouseX, mouseY);
+        for(PanelComponent panelComponent : panelComponents) {
+            panelComponent.render(guiGraphicsExtractor, mouseX, mouseY);
         }
     }
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        for(Panel panel : panels) {
-            if(panel.mouseClicked(event.x(), event.y(), event.button())) {
+        for(PanelComponent panelComponent : panelComponents) {
+            if(panelComponent.mouseClicked(event.x(), event.y(), event.button())) {
                 return true;
             }
         }
@@ -46,8 +46,8 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
-        for(Panel panel : panels) {
-            if(panel.mouseDragged(event.x(), event.y(), event.button(), dx, dy)) {
+        for(PanelComponent panelComponent : panelComponents) {
+            if(panelComponent.mouseDragged(event.x(), event.y(), event.button(), dx, dy)) {
                 return true;
             }
         }
@@ -56,8 +56,8 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public boolean mouseReleased(MouseButtonEvent event) {
-        for(Panel panel : panels) {
-            if(panel.mouseReleased(event.x(), event.y(), event.button())) {
+        for(PanelComponent panelComponent : panelComponents) {
+            if(panelComponent.mouseReleased(event.x(), event.y(), event.button())) {
                 return true;
             }
         }
@@ -66,8 +66,8 @@ public class ClickGuiScreen extends Screen {
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
-        for(Panel panel : panels) {
-            if(panel.isMouseOver(mouseX, mouseY)) {
+        for(PanelComponent panelComponent : panelComponents) {
+            if(panelComponent.isMouseOver(mouseX, mouseY)) {
                 return true;
             }
         }

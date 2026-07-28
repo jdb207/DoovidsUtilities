@@ -1,36 +1,35 @@
-package net.james.gui.components;
+package net.james.gui.components.clickgui;
 
-import net.james.module.Category;
+import net.james.gui.components.AbstractGuiComponent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractWidget;
 
-public class Header extends AbstractGuiComponent {
+public class HeaderComponent extends AbstractGuiComponent {
     public static int SPACING = 1;
     public static int COLOR = 0xff262221;
     private static int HEADER_HEIGHT = 20;
-    private final Panel panel;
+    private final PanelComponent panelComponent;
     private final String categoryName;
     private boolean dragging = false;
     private int dragOffsetX = 0;
     private int dragOffsetY = 0;
 
 
-    public Header(Panel panel, String categoryName) {
-        super(panel.getX(),panel.getY(),100);
-        this.panel = panel;
+    public HeaderComponent(PanelComponent panelComponent, String categoryName) {
+        super(panelComponent.getX(), panelComponent.getY(),100);
+        this.panelComponent = panelComponent;
         this.categoryName = categoryName;
     }
 
 
     public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getInstance();
-        graphics.fill(getX(), getY(),getX()+getWidth() ,getY() + getHeight(), Header.COLOR);
+        graphics.fill(getX(), getY(),getX()+getWidth() ,getY() + getHeight(), HeaderComponent.COLOR);
         graphics.text(mc.font, getCategoryName(), getX()+2, getY() + HEADER_HEIGHT/3 - 1, 0xFFFFFFFF);
     }
 
-    public Panel getPanel() {
-        return panel;
+    public PanelComponent getPanel() {
+        return panelComponent;
     }
 
     public String getCategoryName() {
@@ -64,7 +63,7 @@ public class Header extends AbstractGuiComponent {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int buttonPressed, double dragX, double dragY) {
         if(!dragging) return false;
-        panel.setPosition((int) mouseX - dragOffsetX, (int) mouseY - dragOffsetY);
+        panelComponent.setPosition((int) mouseX - dragOffsetX, (int) mouseY - dragOffsetY);
         return true;
     }
 

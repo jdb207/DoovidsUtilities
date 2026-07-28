@@ -1,5 +1,6 @@
 package net.james.module;
 
+import net.james.module.modules.movement.SpeedModule;
 import net.james.module.modules.movement.SprintModule;
 
 import java.util.ArrayList;
@@ -9,7 +10,10 @@ import java.util.List;
 public class ModuleManager {
     private static final ModuleManager INSTANCE = new ModuleManager();
     private final List<Module> modules = new ArrayList<>();
+
+
     private final SprintModule sprintModule = new SprintModule();
+    private final SpeedModule speedModule = new SpeedModule();
 
     public ModuleManager() {
 
@@ -25,8 +29,8 @@ public class ModuleManager {
     }
 
     public void init() {
-
         register(sprintModule);
+        register(speedModule);
     }
 
     public List<Module> getModules() {

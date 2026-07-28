@@ -1,6 +1,6 @@
 package net.james.gui;
 
-import net.james.gui.components.Panel;
+import net.james.gui.components.clickgui.PanelComponent;
 import net.james.module.Category;
 
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ClickGuiManager {
     private static ClickGuiManager INSTANCE = new ClickGuiManager();
-    private final List<Panel> panels = new ArrayList<>();
+    private final List<PanelComponent> panelComponents = new ArrayList<>();
 
 
     private ClickGuiManager() {
@@ -17,8 +17,8 @@ public class ClickGuiManager {
     public void init() {
         int runningX = 10;
         for(Category category : Category.values()) {
-            panels.add(new Panel(runningX, 10, category));
-            runningX += Panel.PANEL_WIDTH + 1;
+            panelComponents.add(new PanelComponent(runningX, 10, category));
+            runningX += PanelComponent.PANEL_WIDTH + 1;
         }
     }
 
@@ -26,14 +26,14 @@ public class ClickGuiManager {
         return INSTANCE;
     }
 
-    public List<Panel> getPanels() {
-        return this.panels;
+    public List<PanelComponent> getPanels() {
+        return this.panelComponents;
     }
 
-    public Panel getPanel(Category category) {
-        for(Panel panel : panels) {
-            if(panel.getCategory() == Category.HUD) {
-                return panel;
+    public PanelComponent getPanel(Category category) {
+        for(PanelComponent panelComponent : panelComponents) {
+            if(panelComponent.getCategory() == Category.HUD) {
+                return panelComponent;
             }
         }
         return null;

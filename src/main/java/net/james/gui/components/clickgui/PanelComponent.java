@@ -1,20 +1,20 @@
-package net.james.gui.components;
+package net.james.gui.components.clickgui;
 
+import net.james.gui.components.AbstractGuiComponent;
+import net.james.gui.components.hud.HudEditorButton;
 import net.james.module.Category;
 import net.james.module.Module;
 import net.james.module.ModuleManager;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.world.entity.animal.feline.Cat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Panel extends AbstractGuiComponent {
+public class PanelComponent extends AbstractGuiComponent {
 
     private final List<AbstractGuiComponent> children = new ArrayList<>();
     private final Category category;
-    private final Header header;
+    private final HeaderComponent headerComponent;
 
 
     public static final int PANEL_WIDTH = 100;
@@ -22,13 +22,13 @@ public class Panel extends AbstractGuiComponent {
     public static int PANEL_BORDER_COLOR = 0xFF0000FF;
     public static int PANEL_SPACING = 5;
 
-    public Panel(int x, int y, Category category) {
+    public PanelComponent(int x, int y, Category category) {
         super(x, y, 100);
         this.category = category;
-        this.header = new Header(this, getCategoryName());
+        this.headerComponent = new HeaderComponent(this, getCategoryName());
 
         for(Module module : ModuleManager.getInstance().getModules(category)) {
-            children.add(new ModuleButton(module));
+            children.add(new ModuleButtonComponent(module));
         }
         if(this.getCategory() == Category.HUD) {
             children.add(new HudEditorButton(this));
@@ -46,7 +46,7 @@ public class Panel extends AbstractGuiComponent {
         //drawBorder(graphics);
 
         //Draw panel header
-        header.render(graphics, mouseX, mouseY);
+        headerComponent.render(graphics, mouseX, mouseY);
         //Draw Module Buttons
         renderChildren(graphics, mouseX, mouseY);
     }
@@ -66,8 +66,8 @@ public class Panel extends AbstractGuiComponent {
     }
 
     public void layout() {
-        header.setPosition(x, y);
-        int currentY = y + header.getHeight();
+        headerComponent.setPosition(x, y);
+        int currentY = y + headerComponent.getHeight();
         for(AbstractGuiComponent child : children) {
             child.setPosition(x, currentY);
             currentY += child.getHeight();
@@ -102,12 +102,12 @@ public class Panel extends AbstractGuiComponent {
     }
 
     public int getHeight(){
-        return header.getHeight() + children.stream().mapToInt(AbstractGuiComponent::getHeight).sum();
+        return headerComponent.getHeight() + children.stream().mapToInt(AbstractGuiComponent::getHeight).sum();
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed) {
-        if(header.mouseClicked(mouseX, mouseY,buttonPressed)) {
+        if(headerComponent.mouseClicked(mouseX, mouseY,buttonPressed)) {
             return true;
         }
         for(AbstractGuiComponent child : children) {
@@ -120,7 +120,7 @@ public class Panel extends AbstractGuiComponent {
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int buttonPressed) {
-        if(header.mouseReleased(mouseX, mouseY,buttonPressed)) {
+        if(headerComponent.mouseReleased(mouseX, mouseY,buttonPressed)) {
             return true;
         }
         for(AbstractGuiComponent child : children) {
@@ -133,7 +133,7 @@ public class Panel extends AbstractGuiComponent {
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int buttonPressed, double dragX, double dragY) {
-        if(header.mouseDragged(mouseX, mouseY, buttonPressed, dragX, dragY)) {
+        if(headerComponent.mouseDragged(mouseX, mouseY, buttonPressed, dragX, dragY)) {
             return true;
         }
         for(AbstractGuiComponent child : children) {
@@ -146,7 +146,7 @@ public class Panel extends AbstractGuiComponent {
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
-        if(header.isMouseOver(mouseX, mouseY)) {
+        if(headerComponent.isMouseOver(mouseX, mouseY)) {
             return true;
         }
         for(AbstractGuiComponent child : children) {

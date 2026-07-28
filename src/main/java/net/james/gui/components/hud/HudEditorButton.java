@@ -1,23 +1,20 @@
-package net.james.gui.components;
+package net.james.gui.components.hud;
 
-import net.james.gui.ClickGuiManager;
+import net.james.gui.components.AbstractGuiComponent;
+import net.james.gui.components.clickgui.PanelComponent;
 import net.james.gui.screens.HudEditorScreen;
-import net.james.module.Category;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-
-import java.awt.*;
 
 public class HudEditorButton extends AbstractGuiComponent {
 
     private static int HEIGHT = 20;
 
 
-    public HudEditorButton(Panel hudPanel) {
-        int x = hudPanel.getX();
-        int y = hudPanel.getY() + hudPanel.getHeight() + Panel.PANEL_SPACING;
+    public HudEditorButton(PanelComponent hudPanelComponent) {
+        int x = hudPanelComponent.getX();
+        int y = hudPanelComponent.getY() + hudPanelComponent.getHeight() + PanelComponent.PANEL_SPACING;
         super(x,y,100);
     }
 

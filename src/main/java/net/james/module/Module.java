@@ -1,9 +1,15 @@
 package net.james.module;
 
+import net.james.setting.Setting;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Module {
     private final String name;
     private final Category category;
     protected boolean enabled;
+    private final List<Setting <?>> settings = new ArrayList<>();
 
     protected Module(String name, Category category) {
         this.name = name;
@@ -41,8 +47,18 @@ public abstract class Module {
         }
     }
 
+    protected <T extends Setting<?>> T register(T setting) {
+        settings.add(setting);
+        return setting;
+    }
+
     public void toggle() {
         setEnabled(!enabled);
     }
+
+    public List<? extends Setting> getSettings() {
+        return settings;
+    }
+
 
 }
