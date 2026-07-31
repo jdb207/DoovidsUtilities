@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.ARGB;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,19 +64,35 @@ public class ModuleButtonComponent extends AbstractGuiComponent {
 
     public void renderButton(GuiGraphicsExtractor graphicsExtractor, int color) {
         Minecraft mc = Minecraft.getInstance();
-        graphicsExtractor.fill(getX()+1, getY(), getX() + PanelComponent.PANEL_WIDTH - 1, getY() + BUTTON_HEIGHT - 1, color);
+        graphicsExtractor.horizontalLine(getX()+1, getX() + PanelComponent.PANEL_WIDTH - 1, getY(), PanelComponent.PANEL_BACK_COLOR);
+        graphicsExtractor.fill(getX()+1, getY()+1, getX() + PanelComponent.PANEL_WIDTH - 1, getY() + BUTTON_HEIGHT - 1, color);
         graphicsExtractor.text(mc.font, module.getName(), getX() + 2, getY() + BUTTON_HEIGHT/3, MODULE_NAME_COLOR);
     }
 
     public void renderSettings(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
         int currentY = getY();
         for(AbstractSettingComponent settingComponent : settingComponents) {
-            settingComponent.setPosition(getX(), currentY);
+            settingComponent.setPosition(getX(), currentY + settingComponent.getHeight());
             settingComponent.render(guiGraphicsExtractor, mouseX, mouseY);
             currentY += settingComponent.getHeight();
         }
     }
 
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        if(expanded) {
+            return mouseX >= x &&
+                    mouseX <= x + width &&
+                    mouseY >= y &&
+                    mouseY <= y + ModuleButtonComponent.BUTTON_HEIGHT;
+        }
+        return mouseX >= x &&
+                mouseX <= x + width &&
+                mouseY >= y &&
+                mouseY <= y + getHeight();
+
+    }
 
 
 
@@ -84,6 +101,7 @@ public class ModuleButtonComponent extends AbstractGuiComponent {
         if(!isMouseOver(mouseX, mouseY)) {
             return false;
         }
+
         if(buttonPressed == 0) {
             module.toggle();
             return true;

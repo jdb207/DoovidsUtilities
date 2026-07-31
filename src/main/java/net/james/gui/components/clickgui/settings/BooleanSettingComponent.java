@@ -4,6 +4,7 @@ import net.james.gui.components.clickgui.ModuleButtonComponent;
 import net.james.setting.settings.BooleanSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.util.ARGB;
 
 public class BooleanSettingComponent extends AbstractSettingComponent {
     private final static int BOOLEAN_SETTING_HEIGHT = 20;
@@ -17,15 +18,23 @@ public class BooleanSettingComponent extends AbstractSettingComponent {
 
     @Override
     public void render(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
-        drawBooleanBox(guiGraphicsExtractor);
+        drawBooleanBox(guiGraphicsExtractor, mouseX, mouseY);
     }
 
 
-    public void drawBooleanBox(GuiGraphicsExtractor guiGraphicsExtractor) {
+    public void drawBooleanBox(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getInstance();
-        guiGraphicsExtractor.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), BOOLEAN_SETTING_COLOR);
+        if(isMouseOver(mouseX, mouseY)) {
+            guiGraphicsExtractor.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), ARGB.multiplyAlpha(BOOLEAN_SETTING_COLOR, 0.5f));
+        }
+        else {
+            guiGraphicsExtractor.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), BOOLEAN_SETTING_COLOR);
+        }
+
         guiGraphicsExtractor.text(mc.font, setting.getName(), getX() + 2, getY() + getHeight()/3, BOOLEAN_TEXT_COLOR);
     }
+
+
 
 
 

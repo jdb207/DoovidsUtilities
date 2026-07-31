@@ -24,6 +24,7 @@ public class HeaderComponent extends AbstractGuiComponent {
 
     public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getInstance();
+        panelComponent.setPosition(getX(), getY());
         graphics.fill(getX(), getY(),getX()+getWidth() ,getY() + getHeight(), HeaderComponent.COLOR);
         graphics.text(mc.font, getCategoryName(), getX()+2, getY() + HEADER_HEIGHT/3 - 1, 0xFFFFFFFF);
     }

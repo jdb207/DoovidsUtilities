@@ -31,9 +31,9 @@ public abstract class AbstractGuiComponent implements IGuiComponent{
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
         return mouseX >= x &&
-                mouseX <= x + width &&
+                mouseX <= x + getWidth()-2 &&
                 mouseY >= y &&
-                mouseY <= y + getHeight();
+                mouseY <= y + getHeight()-2;
     }
 
     public int getWidth() {
