@@ -13,4 +13,8 @@ public class BooleanSetting extends Setting<Boolean> {
         setValue(!getValue());
     }
 
+    public boolean isEnabled() {
+        return getValue();
+    }
+
 }

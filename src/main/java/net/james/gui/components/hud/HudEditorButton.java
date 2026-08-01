@@ -1,11 +1,13 @@
 package net.james.gui.components.hud;
 
 import net.james.gui.components.AbstractGuiComponent;
+import net.james.gui.components.clickgui.ModuleButtonComponent;
 import net.james.gui.components.clickgui.PanelComponent;
 import net.james.gui.screens.HudEditorScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
 
 public class HudEditorButton extends AbstractGuiComponent {
 
@@ -18,11 +20,34 @@ public class HudEditorButton extends AbstractGuiComponent {
         super(x,y,100);
     }
 
+
+
     @Override
-    public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+    protected void drawBackground(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
+        int color = isMouseOver(mouseX, mouseY) ? ARGB.multiplyAlpha(ModuleButtonComponent.ENABLED_COLOR, 0.5f)
+                : ModuleButtonComponent.ENABLED_COLOR;
+        guiGraphicsExtractor.fill(
+                getX() + 1,
+                getY(),
+                getX() + PanelComponent.PANEL_WIDTH,
+                getY() + getHeight(),
+                color
+        );
+    }
+
+    @Override
+    protected void drawBorder(GuiGraphicsExtractor graphics) {
+        int height = getHeight();
+        graphics.fill(x, y, x + width, y + 1, ModuleButtonComponent.MODULE_BUTTON_COLOR);
+        graphics.fill(x, y + height - 1, x + width, y + height, ModuleButtonComponent.MODULE_BUTTON_COLOR);
+        graphics.fill(x, y, x + 1, y + height, ModuleButtonComponent.MODULE_BUTTON_COLOR);
+        graphics.fill(x + width, y, x + width + 1, y + height, ModuleButtonComponent.MODULE_BUTTON_COLOR);
+    }
+
+    @Override
+    protected void drawContents(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getInstance();
-        graphics.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0xff585858);
-        graphics.text(mc.font, "Hud Editor", getX() + 2, getY() + getHeight()/3 - 1, 0xFFFFFFFF);
+        guiGraphicsExtractor.text(mc.font, "Hud Editor", getX() + 2, getY() + getHeight()/3 - 1, 0xFFFFFFFF);
     }
 
     @Override

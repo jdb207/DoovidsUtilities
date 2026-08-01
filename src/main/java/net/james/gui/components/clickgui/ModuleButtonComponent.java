@@ -25,8 +25,9 @@ public class ModuleButtonComponent extends AbstractGuiComponent {
 
     private static final int BUTTON_HEIGHT = 20;
     public static int MODULE_NAME_COLOR = 0xFFFFFFFF;
-    public static int MODULE_BUTTON_COLOR = 0xff646464;
-    public static int ENABLED_COLOR = 0xff434343;
+    public static int MODULE_BUTTON_COLOR = 0xff91d2ff;
+    public static int ENABLED_COLOR = 0x903B82F6;
+    public static int MODULE_BUTTON_HOVER_COLOR = 0x903B82F6;
 
 
     private boolean expanded = false;
@@ -41,32 +42,56 @@ public class ModuleButtonComponent extends AbstractGuiComponent {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor graphicsExtractor, int mouseX, int mouseY) {
+    protected void drawBackground(GuiGraphicsExtractor graphicsExtractor, int mouseX, int mouseY) {
         int color;
+
         if(module.isEnabled()) {
-            if(isMouseOver(mouseX, mouseY)) {
-                color = ARGB.multiplyAlpha(ENABLED_COLOR, 0.5f);
-            }
-            else {
-                color = ENABLED_COLOR;
-            }
+            color = isHeaderHovered(mouseX, mouseY)
+                    ? ARGB.multiplyAlpha(ENABLED_COLOR, 0.5f)
+                    : ENABLED_COLOR;
         }
         else {
-             color = isMouseOver(mouseX, mouseY) ? ENABLED_COLOR : MODULE_BUTTON_COLOR;
+            color = isHeaderHovered(mouseX, mouseY)
+                    ? MODULE_BUTTON_HOVER_COLOR
+                    : ARGB.multiplyAlpha(MODULE_BUTTON_COLOR,0.4f);
         }
 
-        renderButton(graphicsExtractor, color);
+        graphicsExtractor.fill(
+                getX() + 1,
+                getY(),
+                getX() + PanelComponent.PANEL_WIDTH,
+                getY() + BUTTON_HEIGHT,
+                color
+        );
+    }
+
+
+
+    @Override
+    protected void drawBorder(GuiGraphicsExtractor graphics) {
+        int height = getHeight();
+        graphics.fill(x, y, x + width, y + 1, MODULE_BUTTON_COLOR);
+        graphics.fill(x, y + height - 1, x + width, y + height, MODULE_BUTTON_COLOR);
+        graphics.fill(x, y, x + 1, y + height, MODULE_BUTTON_COLOR);
+        graphics.fill(x + width, y, x + width + 1, y + height, MODULE_BUTTON_COLOR);
+    }
+
+    @Override
+    protected void drawContents(GuiGraphicsExtractor graphicsExtractor, int mouseX, int mouseY) {
+        Minecraft mc = Minecraft.getInstance();
+
+        graphicsExtractor.text(
+                mc.font,
+                module.getName(),
+                getX() + 2,
+                getY() + BUTTON_HEIGHT / 3,
+                MODULE_NAME_COLOR
+        );
 
         if(expanded) {
             renderSettings(graphicsExtractor, mouseX, mouseY);
         }
-    }
 
-    public void renderButton(GuiGraphicsExtractor graphicsExtractor, int color) {
-        Minecraft mc = Minecraft.getInstance();
-        graphicsExtractor.horizontalLine(getX()+1, getX() + PanelComponent.PANEL_WIDTH - 1, getY(), PanelComponent.PANEL_BACK_COLOR);
-        graphicsExtractor.fill(getX()+1, getY()+1, getX() + PanelComponent.PANEL_WIDTH - 1, getY() + BUTTON_HEIGHT - 1, color);
-        graphicsExtractor.text(mc.font, module.getName(), getX() + 2, getY() + BUTTON_HEIGHT/3, MODULE_NAME_COLOR);
     }
 
     public void renderSettings(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
@@ -79,35 +104,43 @@ public class ModuleButtonComponent extends AbstractGuiComponent {
     }
 
 
+    public boolean isHeaderHovered(double mouseX, double mouseY) {
+        return x <= mouseX && mouseX <= x + width && mouseY >= y && mouseY <= y + BUTTON_HEIGHT;
+    }
+
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
-        if(expanded) {
-            return mouseX >= x &&
-                    mouseX <= x + width &&
-                    mouseY >= y &&
-                    mouseY <= y + ModuleButtonComponent.BUTTON_HEIGHT;
+        if(isHeaderHovered(mouseX, mouseY)) {
+            return true;
         }
-        return mouseX >= x &&
-                mouseX <= x + width &&
-                mouseY >= y &&
-                mouseY <= y + getHeight();
+        for(AbstractSettingComponent settingComponent : settingComponents) {
+            if(settingComponent.isMouseOver(mouseX, mouseY)) {
+                return true;
+            }
+        }
 
+        return false;
     }
 
 
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed) {
-        if(!isMouseOver(mouseX, mouseY)) {
-            return false;
+        if(expanded) {
+            for(AbstractSettingComponent settingComponent : settingComponents) {
+                if(settingComponent.mouseClicked(mouseX, mouseY, buttonPressed)) {
+                    return true;
+                }
+            }
         }
 
-        if(buttonPressed == 0) {
-            module.toggle();
-            return true;
-        }
-        if(buttonPressed == 1) {
-            expanded = !expanded;
+        if(isHeaderHovered(mouseX, mouseY)) {
+            if(buttonPressed == 0) {
+                module.toggle();
+            }
+            else if(buttonPressed == 1) {
+                expanded = !expanded;
+            }
             return true;
         }
         return false;
@@ -129,12 +162,14 @@ public class ModuleButtonComponent extends AbstractGuiComponent {
 
     @Override
     public int getHeight() {
+        if (!expanded)
+            return BUTTON_HEIGHT;
+
         int height = BUTTON_HEIGHT;
-        if(expanded) {
-            for(AbstractSettingComponent settingComponent : settingComponents) {
-                height += settingComponent.getHeight();
-            }
-        }
+
+        for (AbstractSettingComponent setting : settingComponents)
+            height += setting.getHeight();
+
         return height;
     }
 

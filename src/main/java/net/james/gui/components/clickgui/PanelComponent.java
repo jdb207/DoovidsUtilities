@@ -5,6 +5,7 @@ import net.james.gui.components.hud.HudEditorButton;
 import net.james.module.Category;
 import net.james.module.Module;
 import net.james.module.ModuleManager;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class PanelComponent extends AbstractGuiComponent {
 
 
     public static final int PANEL_WIDTH = 100;
-    public static int PANEL_BACK_COLOR = 0xff585858;
+    public static int PANEL_BACK_COLOR = 0x00FF0000;
     public static int PANEL_BORDER_COLOR = 0xFF0000FF;
     public static int PANEL_SPACING = 5;
 
@@ -37,26 +38,22 @@ public class PanelComponent extends AbstractGuiComponent {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        //TODO make height/width based on module names / number of modules
-        //Draw panel background
-        drawBackground(graphics);
-        //Draw panel border
-
-        //drawBorder(graphics);
-
+    protected void drawContents(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
+        layout();
         //Draw panel header
-        headerComponent.render(graphics, mouseX, mouseY);
+        headerComponent.render(guiGraphicsExtractor, mouseX, mouseY);
         //Draw Module Buttons
-        renderChildren(graphics, mouseX, mouseY);
+        renderChildren(guiGraphicsExtractor, mouseX, mouseY);
     }
 
-    public void drawBackground(GuiGraphicsExtractor graphics) {
+    @Override
+    protected void drawBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
         graphics.fill(getX(), getY(), getX() + PANEL_WIDTH, getY() + getHeight(), PANEL_BACK_COLOR);
     }
 
-    public void drawBorder(GuiGraphicsExtractor graphics) {
-        graphics.outline(getX(), getY(), PANEL_WIDTH, getHeight(),PANEL_BORDER_COLOR );
+    @Override
+    protected void drawBorder(GuiGraphicsExtractor graphics) {
+        graphics.fill(getX(), getY(), getX() + getWidth(), getY() + 1, PANEL_BORDER_COLOR);
     }
 
     public void renderChildren(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -70,7 +67,7 @@ public class PanelComponent extends AbstractGuiComponent {
         int currentY = y + headerComponent.getHeight();
         for(AbstractGuiComponent child : children) {
             child.setPosition(x, currentY);
-            currentY += child.getHeight();
+            currentY += child.getHeight() + 1;
         }
 
     }

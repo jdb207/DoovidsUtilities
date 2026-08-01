@@ -9,7 +9,6 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.ARGB;
 
 public class FPSHud extends AbstractHudElement {
-    private int fps;
 
     public FPSHud() {
         super(Anchor.TOP_LEFT,5, 5);

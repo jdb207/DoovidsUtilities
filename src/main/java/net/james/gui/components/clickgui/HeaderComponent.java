@@ -2,12 +2,13 @@ package net.james.gui.components.clickgui;
 
 import net.james.gui.components.AbstractGuiComponent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class HeaderComponent extends AbstractGuiComponent {
     public static int SPACING = 1;
     public static int COLOR = 0xff262221;
-    private static int HEADER_HEIGHT = 20;
+    private static int HEADER_HEIGHT = 15;
     private final PanelComponent panelComponent;
     private final String categoryName;
     private boolean dragging = false;
@@ -22,11 +23,19 @@ public class HeaderComponent extends AbstractGuiComponent {
     }
 
 
-    public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+
+    @Override
+    protected void drawContents(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getInstance();
-        panelComponent.setPosition(getX(), getY());
-        graphics.fill(getX(), getY(),getX()+getWidth() ,getY() + getHeight(), HeaderComponent.COLOR);
-        graphics.text(mc.font, getCategoryName(), getX()+2, getY() + HEADER_HEIGHT/3 - 1, 0xFFFFFFFF);
+        guiGraphicsExtractor.text(mc.font, getCategoryName(), getX()+2, getY() + HEADER_HEIGHT/3 - 1, 0xFFFFFFFF);
+    }
+
+    @Override
+    protected void drawBorder(GuiGraphicsExtractor guiGraphicsExtractor) {
+        guiGraphicsExtractor.horizontalLine(getX(), getX() + getWidth(), getY(),ModuleButtonComponent.MODULE_BUTTON_COLOR);
+        guiGraphicsExtractor.horizontalLine(getX(), getX() + getWidth(), getY() + getHeight(),ModuleButtonComponent.MODULE_BUTTON_COLOR);
+        guiGraphicsExtractor.verticalLine(getX(), getY(), getY() + getHeight() ,ModuleButtonComponent.MODULE_BUTTON_COLOR);
+        guiGraphicsExtractor.verticalLine(getX() + getWidth(), getY(), getY() + getHeight() ,ModuleButtonComponent.MODULE_BUTTON_COLOR);
     }
 
     public PanelComponent getPanel() {

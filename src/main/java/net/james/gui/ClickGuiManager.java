@@ -18,7 +18,7 @@ public class ClickGuiManager {
         int runningX = 10;
         for(Category category : Category.values()) {
             panelComponents.add(new PanelComponent(runningX, 10, category));
-            runningX += PanelComponent.PANEL_WIDTH + 1;
+            runningX += PanelComponent.PANEL_WIDTH + 3;
         }
     }
 

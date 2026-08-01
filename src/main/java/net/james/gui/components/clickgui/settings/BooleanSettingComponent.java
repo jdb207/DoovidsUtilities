@@ -1,6 +1,7 @@
 package net.james.gui.components.clickgui.settings;
 
 import net.james.gui.components.clickgui.ModuleButtonComponent;
+import net.james.gui.components.clickgui.PanelComponent;
 import net.james.setting.settings.BooleanSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -10,6 +11,9 @@ public class BooleanSettingComponent extends AbstractSettingComponent {
     private final static int BOOLEAN_SETTING_HEIGHT = 20;
     private final static int BOOLEAN_SETTING_COLOR = 0xff646464;
     private final static int BOOLEAN_TEXT_COLOR = 0xFFFFFFFF;
+    public static final int SETTING_BACKGROUND_COLOR       = 0xFF3A4F66;
+    public static final int SETTING_HOVER_BACKGROUND_COLOR = 0xFF39414D;
+    public static final int BORDER_COLOR = 0x903B82F6;
 
 
     public BooleanSettingComponent(BooleanSetting setting) {
@@ -17,35 +21,49 @@ public class BooleanSettingComponent extends AbstractSettingComponent {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
-        drawBooleanBox(guiGraphicsExtractor, mouseX, mouseY);
+    protected void drawBackground(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
+        int color;
+        BooleanSetting booleanSetting = (BooleanSetting) setting;
+        if (booleanSetting.isEnabled()) {
+            color = isMouseOver(mouseX, mouseY)
+                    ? ARGB.multiplyAlpha(ENABLED_COLOR, 0.5f)
+                    : ENABLED_COLOR;
+        } else {
+            color = isMouseOver(mouseX, mouseY)
+                    ? SETTING_HOVER_BACKGROUND_COLOR
+                    : SETTING_BACKGROUND_COLOR;
+        }
+
+        guiGraphicsExtractor.fill(
+                getX() + 1,
+                getY(),
+                getX() + PanelComponent.PANEL_WIDTH - 1,
+                getY() + getHeight() - 1,
+                color
+        );
     }
 
+    @Override
+    protected void drawBorder(GuiGraphicsExtractor guiGraphicsExtractor) {
+        guiGraphicsExtractor.horizontalLine(getX() + 1, getX() + getWidth() - 2,getY() + getHeight() - 1, ModuleButtonComponent.MODULE_BUTTON_COLOR);
+    }
 
-    public void drawBooleanBox(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
+    @Override
+    protected void drawContents(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
         Minecraft mc = Minecraft.getInstance();
-        if(isMouseOver(mouseX, mouseY)) {
-            guiGraphicsExtractor.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), ARGB.multiplyAlpha(BOOLEAN_SETTING_COLOR, 0.5f));
-        }
-        else {
-            guiGraphicsExtractor.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), BOOLEAN_SETTING_COLOR);
-        }
-
-        guiGraphicsExtractor.text(mc.font, setting.getName(), getX() + 2, getY() + getHeight()/3, BOOLEAN_TEXT_COLOR);
+        guiGraphicsExtractor.text(mc.font, setting.getName(), getX() + 3, getY() + 4,BOOLEAN_TEXT_COLOR);
     }
-
-
-
-
-
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int buttonPressed) {
-        if(!isMouseOver(mouseX, mouseY) || buttonPressed != 0) {
+        if(!isMouseOver(mouseX, mouseY)) {
             return false;
         }
-        ((BooleanSetting) setting).toggle();
-        return true;
+        if(buttonPressed == 0) {
+            ((BooleanSetting) setting).toggle();
+            return true;
+        }
+        return false;
     }
 
     @Override

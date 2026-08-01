@@ -10,6 +10,13 @@ public class EnumSetting<E extends Enum<E>> extends Setting<E> {
         this.values = defaultValue.getDeclaringClass().getEnumConstants();
     }
 
+    public E getNextValue() {
+        E current = getValue();
+        return values[(current.ordinal() + 1) % values.length];
+    }
+
+
+
 
 
 }

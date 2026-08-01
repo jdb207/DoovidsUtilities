@@ -15,10 +15,21 @@ public abstract class AbstractGuiComponent implements IGuiComponent{
         this.width = width;
 
     }
+    public final void render(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
+        drawBackground(guiGraphicsExtractor, mouseX, mouseY);
+        drawBorder(guiGraphicsExtractor);
+        drawContents(guiGraphicsExtractor, mouseX, mouseY);
+    }
 
+    protected void drawBackground(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
 
-    public abstract void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY);
+    }
 
+    protected void drawBorder(GuiGraphicsExtractor graphicsExtractor) {
+
+    }
+
+    protected abstract void drawContents(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY);
 
     public abstract boolean mouseClicked(double mouseX, double mouseY, int buttonPressed);
 

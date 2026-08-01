@@ -12,7 +12,7 @@ public class NumberSettingComponent extends AbstractSettingComponent {
 
 
     @Override
-    public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+    protected void drawContents(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
 
     }
 
