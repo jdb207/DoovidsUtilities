@@ -15,7 +15,7 @@ public class ModuleManager {
     private final SprintModule sprintModule = new SprintModule();
     private final SpeedModule speedModule = new SpeedModule();
 
-    public ModuleManager() {
+    private ModuleManager() {
 
     }
 

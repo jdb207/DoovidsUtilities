@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.util.ARGB;
 
-public class BooleanSettingComponent extends AbstractSettingComponent {
+public class BooleanSettingComponent extends AbstractSettingComponent<BooleanSetting> {
     private final static int BOOLEAN_SETTING_HEIGHT = 20;
     private final static int BOOLEAN_SETTING_COLOR = 0xff646464;
     private final static int BOOLEAN_TEXT_COLOR = 0xFFFFFFFF;
@@ -23,11 +23,10 @@ public class BooleanSettingComponent extends AbstractSettingComponent {
     @Override
     protected void drawBackground(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
         int color;
-        BooleanSetting booleanSetting = (BooleanSetting) setting;
-        if (booleanSetting.isEnabled()) {
+        if (setting.isEnabled()) {
             color = isMouseOver(mouseX, mouseY)
-                    ? ARGB.multiplyAlpha(ENABLED_COLOR, 0.5f)
-                    : ENABLED_COLOR;
+                    ? ARGB.multiplyAlpha(ENABLED_COLOR, 0.2f)
+                    : ARGB.multiplyAlpha(ENABLED_COLOR, 0.7f);
         } else {
             color = isMouseOver(mouseX, mouseY)
                     ? SETTING_HOVER_BACKGROUND_COLOR
@@ -37,7 +36,7 @@ public class BooleanSettingComponent extends AbstractSettingComponent {
         guiGraphicsExtractor.fill(
                 getX() + 1,
                 getY(),
-                getX() + PanelComponent.PANEL_WIDTH - 1,
+                getX() + PanelComponent.PANEL_WIDTH,
                 getY() + getHeight() - 1,
                 color
         );
@@ -45,7 +44,7 @@ public class BooleanSettingComponent extends AbstractSettingComponent {
 
     @Override
     protected void drawBorder(GuiGraphicsExtractor guiGraphicsExtractor) {
-        guiGraphicsExtractor.horizontalLine(getX() + 1, getX() + getWidth() - 2,getY() + getHeight() - 1, ModuleButtonComponent.MODULE_BUTTON_COLOR);
+        guiGraphicsExtractor.horizontalLine(getX() + 1, getX() + getWidth() - 1,getY() + getHeight() - 1, ModuleButtonComponent.MODULE_BUTTON_COLOR);
     }
 
     @Override

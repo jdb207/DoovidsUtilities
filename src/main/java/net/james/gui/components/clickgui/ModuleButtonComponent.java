@@ -47,13 +47,13 @@ public class ModuleButtonComponent extends AbstractGuiComponent {
 
         if(module.isEnabled()) {
             color = isHeaderHovered(mouseX, mouseY)
-                    ? ARGB.multiplyAlpha(ENABLED_COLOR, 0.5f)
+                    ? ARGB.multiplyAlpha(ENABLED_COLOR, 0.8f)
                     : ENABLED_COLOR;
         }
         else {
             color = isHeaderHovered(mouseX, mouseY)
                     ? MODULE_BUTTON_HOVER_COLOR
-                    : ARGB.multiplyAlpha(MODULE_BUTTON_COLOR,0.4f);
+                    : ARGB.multiplyAlpha(MODULE_BUTTON_COLOR,0.7f);
         }
 
         graphicsExtractor.fill(
@@ -97,9 +97,9 @@ public class ModuleButtonComponent extends AbstractGuiComponent {
     public void renderSettings(GuiGraphicsExtractor guiGraphicsExtractor, int mouseX, int mouseY) {
         int currentY = getY();
         for(AbstractSettingComponent settingComponent : settingComponents) {
-            settingComponent.setPosition(getX(), currentY + settingComponent.getHeight());
-            settingComponent.render(guiGraphicsExtractor, mouseX, mouseY);
             currentY += settingComponent.getHeight();
+            settingComponent.setPosition(getX(), currentY);
+            settingComponent.render(guiGraphicsExtractor, mouseX, mouseY);
         }
     }
 
@@ -152,10 +152,17 @@ public class ModuleButtonComponent extends AbstractGuiComponent {
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int buttonPressed, double dragX, double dragY) {
+    public boolean mouseDragged(double mouseX, double mouseY,
+                                int buttonPressed, double dragX, double dragY) {
+
+        for (AbstractSettingComponent<?> settingComponent : settingComponents) {
+            if (settingComponent.mouseDragged(mouseX, mouseY, buttonPressed, dragX, dragY)) {
+                return true;
+            }
+        }
+
         return false;
     }
-
     public int getY() {
         return y;
     }

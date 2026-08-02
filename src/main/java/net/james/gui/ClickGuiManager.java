@@ -32,7 +32,7 @@ public class ClickGuiManager {
 
     public PanelComponent getPanel(Category category) {
         for(PanelComponent panelComponent : panelComponents) {
-            if(panelComponent.getCategory() == Category.HUD) {
+            if(panelComponent.getCategory() == category) {
                 return panelComponent;
             }
         }

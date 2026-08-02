@@ -15,6 +15,10 @@ public class EnumSetting<E extends Enum<E>> extends Setting<E> {
         return values[(current.ordinal() + 1) % values.length];
     }
 
+    public void next() {
+        setValue(getNextValue());
+    }
+
 
 
 

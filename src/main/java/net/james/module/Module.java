@@ -56,7 +56,7 @@ public abstract class Module {
         setEnabled(!enabled);
     }
 
-    public List<? extends Setting> getSettings() {
+    public List<? extends Setting<?>> getSettings() {
         return settings;
     }
 

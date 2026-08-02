@@ -21,5 +21,15 @@ public class NumberSetting extends Setting<Double> {
         super.setValue(Math.max(min, Math.min(max, value)));
     }
 
+    public double getMin() {
+        return min;
+    }
 
+    public double getMax() {
+        return max;
+    }
+
+    public double getIncrement() {
+        return increment;
+    }
 }
